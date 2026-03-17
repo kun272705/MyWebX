@@ -8,8 +8,6 @@ npm install
 
 vim .browserslistrc
 
-mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt -DincludeScope=compile
-
 for file in src/pub/res/*; do
 
   copy_file "$file" "tgt/pub/${file##*/}"
@@ -22,6 +20,8 @@ for dir in src/pub/lib.*/; do
     copy_file "$file" "tgt/pub/lib/${file##*/}"
   done
 done
+
+mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt -DincludeScope=compile
 
 for dir in src/pub/*/; do
  
