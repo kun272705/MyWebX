@@ -33,10 +33,10 @@ build_jar() {
 
     if [[ "${MODE:-production}" == development ]]; then
 
-      javac -cp "java_packages/*" "${input/%Handler.java/*.java}" -d "${outdir}classes/" -g
+      javac -cp @classpath.txt "${input/%Handler.java/*.java}" -d "${outdir}classes/" -g
     else
 
-      javac -cp "java_packages/*" "${input/%Handler.java/*.java}" -d "${outdir}classes/"
+      javac -cp @classpath.txt "${input/%Handler.java/*.java}" -d "${outdir}classes/"
     fi
 
     local args=("-C" "${outdir}classes/" "./")

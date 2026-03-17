@@ -4,13 +4,11 @@ set -euo pipefail
 
 source .builder.sh
 
-mvn dependency:copy-dependencies -DoutputDirectory=java_packages/ -DincludeScope=test
-
 npm install
 
 vim .browserslistrc
 
-mvn dependency:copy-dependencies -DoutputDirectory=tgt/lib/ -DincludeScope=runtime
+mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt -DincludeScope=compile
 
 for file in src/pub/res/*; do
 
