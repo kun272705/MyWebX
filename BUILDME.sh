@@ -21,8 +21,6 @@ for dir in src/pub/lib.*/; do
   done
 done
 
-mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt -DincludeScope=compile
-
 for dir in src/pub/*/; do
  
   item="${dir/src/tgt}"
