@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source .builder.sh
+source .builder
 
 for file in src/pub/res/*; do
 
