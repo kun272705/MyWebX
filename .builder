@@ -9,8 +9,6 @@ copy_file() {
 
   if [ -f "$src" ]; then
 
-    echo -e "\n'$src' -> '$dst'"
-
     mkdir -p "${dst%/*}"
 
     cp "$src" "$dst"
@@ -23,8 +21,6 @@ build_jar() {
   local output="$2"
 
   if [ -f "$input" ]; then
-
-    echo -e "\n'$input' -> '$output'"
 
     local indir="${input%/*}/"
     local outdir="${output%/*}/"
@@ -73,8 +69,6 @@ build_css() {
 
   if [ -f "$input" ]; then
     
-    echo -e "\n'$input' -> '$output'"
-
     if [[ "${MODE:-production}" == development ]]; then
 
       npx lightningcss "$input" -o "$output" --bundle --browserslist
@@ -91,8 +85,6 @@ build_js() {
   local output="$2"
 
   if [ -f "$input" ]; then
-
-    echo -e "\n'$input' -> '$output'"
 
     npx rollup -i "$input" -o "${output/%.js/.combined.js}" -f iife --failAfterWarnings
 
