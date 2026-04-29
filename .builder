@@ -37,14 +37,17 @@ build_jar() {
 
     local args=("-C" "${outdir}classes/" "./")
 
-    if [ -f "${input/%Handler.java/template.html}" ]; then
+    local dir="${input%/*}"
+    local name="${dir##*/}"
+
+    if [ -f "${indir}${name}.html" ]; then
 
       if [[ "${MODE:-production}" == development ]]; then
 
-        npx ejs "${input/%Handler.java/template.html}" -o "${outdir}template.html"
+        npx ejs "${indir}${name}.html" -o "${outdir}template.html"
       else
 
-        npx ejs "${input/%Handler.java/template.html}" -o "${outdir}template.html" -w
+        npx ejs "${indir}${name}.html" -o "${outdir}template.html" -w
       fi
 
       args+=("-C" "$outdir" "template.html")
