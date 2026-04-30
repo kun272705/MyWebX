@@ -4,14 +4,14 @@ set -euo pipefail
 
 copy_file() {
 
-  local src="$1"
-  local dst="$2"
+  local input="$1"
+  local output="$2"
 
-  if [ -f "$src" ]; then
+  if [ -f "$input" ]; then
 
-    mkdir -p "${dst%/*}"
+    mkdir -p "${output%/*}"
 
-    cp "$src" "$dst"
+    cp "$input" "$output"
   fi
 }
 
@@ -27,35 +27,35 @@ build_jar() {
 
     mkdir -p "${outdir}classes/"
 
-    if [[ "${MODE:-production}" == development ]]; then
-
-      javac -cp @classpath.txt "${input/%Handler.java/*.java}" -d "${outdir}classes/" -g
-    else
+    if [[ "${MODE:-development}" == production ]]; then
 
       javac -cp @classpath.txt "${input/%Handler.java/*.java}" -d "${outdir}classes/"
+    else
+
+      javac -cp @classpath.txt "${input/%Handler.java/*.java}" -d "${outdir}classes/" -g
     fi
 
     local args=("-C" "${outdir}classes/" "./")
+
+    if [ -d "${indir}resources/" ]; then
+
+      args+=("-C" "$indir" "resources/")
+    fi
 
     local dir="${input%/*}"
     local name="${dir##*/}"
 
     if [ -f "${indir}${name}.html" ]; then
 
-      if [[ "${MODE:-production}" == development ]]; then
-
-        npx ejs "${indir}${name}.html" -o "${outdir}template.html"
-      else
+      if [[ "${MODE:-development}" == production ]]; then
 
         npx ejs "${indir}${name}.html" -o "${outdir}template.html" -w
+      else
+
+        npx ejs "${indir}${name}.html" -o "${outdir}template.html"
       fi
 
       args+=("-C" "$outdir" "template.html")
-    fi
-
-    if [ -d "${indir}resources/" ]; then
-
-      args+=("-C" "$indir" "resources/")
     fi
 
     jar cf "$output" "${args[@]}"
@@ -72,12 +72,12 @@ build_css() {
 
   if [ -f "$input" ]; then
     
-    if [[ "${MODE:-production}" == development ]]; then
-
-      npx lightningcss "$input" -o "$output" --bundle --browserslist
-    else
+    if [[ "${MODE:-development}" == production ]]; then
 
       npx lightningcss "$input" -o "$output" --bundle --browserslist --minify
+    else
+
+      npx lightningcss "$input" -o "$output" --bundle --browserslist
     fi
   fi
 }
@@ -93,18 +93,15 @@ build_js() {
 
     npx swc "${output/%.js/.combined.js}" -o "${output/%.js/.transpiled.js}"
 
-    if [[ "${MODE:-production}" == development ]]; then
+    if [[ "${MODE:-development}" == production ]]; then
 
-      cp "${output/%.js/.transpiled.js}" "$output"
+      npx rolldown "${output/%.js/.transpiled.js}" -o "$output" -m
     else
 
-      npx terser "${output/%.js/.transpiled.js}" -o "${output/%.js/.compressed.js}" -c -m
-
-      cp "${output/%.js/.compressed.js}" "$output"
+      cp "${output/%.js/.transpiled.js}" "$output"
     fi
 
     rm "${output/%.js/.combined.js}"
     rm "${output/%.js/.transpiled.js}"
-    rm -f "${output/%.js/.compressed.js}"
   fi
 }
