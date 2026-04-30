@@ -1,6 +1,6 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mycompany</groupId>
-  <artifactId>mywebsite</artifactId>
+  <artifactId>mywebsitebuilder</artifactId>
   <version>1.0.0</version>
 </project>
