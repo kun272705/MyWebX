@@ -49,10 +49,10 @@ build_jar() {
 
       if [[ "${MODE:-development}" == production ]]; then
 
-        npx ejs "${indir}${name}.html" -o "${outdir}template.html" -m $ -w
+        npx ejs "${indir}${name}.html" -o "${outdir}template.html" -m ! -w
       else
 
-        npx ejs "${indir}${name}.html" -o "${outdir}template.html" -m $
+        npx ejs "${indir}${name}.html" -o "${outdir}template.html" -m !
       fi
 
       args+=("-C" "$outdir" "template.html")
