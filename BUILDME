@@ -6,14 +6,22 @@ source .builder
 
 for file in src/pub.res/*; do
 
-  copy_file "$file" "tgt/pub/${file##*/}"
+  if [ -f "$file" ]; then
+
+    echo -e "\nCopying $file"
+    copy_file "$file" "tgt/pub/${file##*/}"
+  fi
 done
 
 for dir in src/pub.lib.*/; do
 
   for file in "$dir"*; do
 
-    copy_file "$file" "tgt/pub/lib/${file##*/}"
+    if [ -f "$file" ]; then
+
+      echo -e "\nCopying $file"
+      copy_file "$file" "tgt/pub/lib/${file##*/}"
+    fi
   done
 done
 
@@ -27,10 +35,13 @@ for dir in src/pub.*/; do
 
   if [ -f "${dir}Handler.java" ]; then
 
+    echo -e "\nBuilding ${dir}Handler.java"
     build_jar "${dir}Handler.java" "${item}.jar"
 
+    echo -e "\nBuilding ${dir}${name}.css"
     build_css "${dir}${name}.css" "${item}.css"
 
+    echo -e "\nBuilding ${dir}${name}.js"
     build_js "${dir}${name}.js" "${item}.js"
   fi
 done

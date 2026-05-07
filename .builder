@@ -91,7 +91,7 @@ build_js() {
 
     npx rolldown "$input" -o "${output/%.js/.combined.js}" -f iife
 
-    npx swc "${output/%.js/.combined.js}" -o "${output/%.js/.transpiled.js}"
+    npx swc "${output/%.js/.combined.js}" -o "${output/%.js/.transpiled.js}" -q
 
     if [[ "${MODE:-development}" == production ]]; then
 
