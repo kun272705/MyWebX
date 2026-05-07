@@ -43,7 +43,7 @@ build_jar() {
     fi
 
     local dir="${input%/*}"
-    local name="${dir##*/}"
+    local name="${dir##*.}"
 
     if [ -f "${indir}${name}.html" ]; then
 

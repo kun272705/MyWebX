@@ -4,20 +4,20 @@ set -euo pipefail
 
 source .builder
 
-for file in src/pub/res/*; do
+for file in src/pub.res/*; do
 
   copy_file "$file" "tgt/pub/${file##*/}"
 done
 
-for dir in src/pub/lib.*/; do
+for dir in src/pub.lib.*/; do
 
-  for file in "${dir}"*; do
+  for file in "$dir"*; do
 
     copy_file "$file" "tgt/pub/lib/${file##*/}"
   done
 done
 
-for dir in src/pub/*/; do
+for dir in src/pub.*/; do
  
   item="${dir/src/tgt}"
   item="${item//.//}"
