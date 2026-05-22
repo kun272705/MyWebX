@@ -7,6 +7,6 @@
     "ejs": "^5.0.2",
     "lightningcss": "^1.32.0",
     "lightningcss-cli": "^1.32.0",
-    "rolldown": "^1.0.1"
+    "rolldown": "^1.0.2"
   }
 }
